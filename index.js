@@ -12,7 +12,7 @@ require('dotenv').config()
 const bot = new Client();
 var version = 'v0.4.0';
 var data = {};
-
+//test
 var profanities = require('profanities')
 const token = process.env.BOT_TOKEN;
 bot.on('ready', async () => {
