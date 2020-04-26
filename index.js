@@ -12,7 +12,7 @@ require('dotenv').config()
 const bot = new Client();
 var version = 'v0.4.0';
 var data = {};
-//test
+
 var profanities = require('profanities')
 const token = process.env.BOT_TOKEN;
 bot.on('ready', async () => {
@@ -66,30 +66,25 @@ bot.on('message', async (msg) =>{
                 /*if(msg.member.roles.find(r => r.name === "Community Manager") || msg.member.roles.find(r => r.name === "Discord Mods") || msg.member.roles.find(r => r.name === "Owner")) {
                     Leave this code in the event we want to do something custom later down the road.
                 */
-                if (isStaff) {//are you still here?
-                    const embed = new MessageEmbed()
-                        .setTitle("GuardianBot ()")
-                        .setColor(0x0000ff)
-                        .setDescription("Thank you to everyone that has contributed to the creation of GuardianBot!");
-                    msg.channel.send(embed)
-                        /*msg.channel.send({
-                        embed: {
-                            title: ,
-                            description: ,
-                            color: 0x0000ff,
+                if (isStaff) {
+                    msg.channel.send({
+                        "embed": {
+                            "title": "GuardianBot (" + version + ")",
+                            "description": "Thank you to everyone that has contributed to the creation of GuardianBot!",
+                            "color": 0x0000ff,
                             
-                            fields: [
+                            "fields": [
                                 {
-                                    name: "Authors of GuardianBot",
-                                    value: "Grid21, \nVergilPrime, \nSundafyllir"
+                                    "name": "Authors of GuardianBot",
+                                    "value": "Grid21, \nVergilPrime, \nSundafyllir"
                                 },
                                 {
-                                    name: "Additonal help",
-                                    value: "Leotomas, Yoshidog2005, MarriedGeekGuy"
+                                    "name": "Additonal help",
+                                    "value": "Leotomas, Yoshidog2005, MarriedGeekGuy"
                                 }
                             ]
                         }
-                    });*/
+                    });
                 } else {
                     msg.channel.send('You do not have permission');
                 }
