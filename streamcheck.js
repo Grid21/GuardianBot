@@ -1,119 +1,72 @@
+const announceRole = "245272223101747200";
+const currentlyLive = []; //array of live user ids
+const fetch = require("node-fetch");
+require('dotenv').config({
+    path: "./.env"
+})
+let gameid;
+
 module.exports = {
-    check: async function(member) {
-        /*
-        returns null if member is not streamer
-        returns the discord activity of the stream if they are
-        */
-        // this is bad dont do this
-        var userData = JSON.parse(JSON.stringify(member.presence));
+    async stream(client) { // the id has to be from twitch, not discord
+        const server = await client.guilds.cache.get("108417593513127936");
+        //Line 13 is the channel for affiliated streamers.
+        const channel = client.channels.cache.get("464335012595105792");
+        /** Importing Modules */
         
-        for (var act in userData["activities"]) {
-            if (userData["activities"][act]["type"] == 1) {
-                return userData["activities"][act];
-            }
-        }
-
-        return null
-    },
-    check2: async function(client) {
-        var server = await client.guilds.get("108417593513127936");
-        var announceRole = "245272223101747200";
-        var channel = await client.channels.get("458156246521085953");
-        
-        for (let m of server.members) {
-            if (m.id == server.owner.id) {
-                let status = this.check(m)
-
-                if (status) {
-                    console.log("grid is live")
-                }
-            } else if (m.roles.some(r=>r.id == announceRole)) {
-                let status = this.check(m)
-
-                if (status) {
-                    console.log(m.displayName + " is live")
-                }
-            }
-        }
-    }
-};
-
-//console.log(server.members)
-
-        /*
-        
-        
-        liveMsg = await gridchannel.send({embed:{
+        server.members.cache.forEach(async m => {
+            if (m.roles.cache.some(r => r.id == announceRole)) {
+                if (!m.presence.activities) return;
+                const activity = m.presence.activities.filter(m => m.type === "STREAMING")[0];
+                if (!activity) return;
+                
+                var discordProfilePicture = m.user.avatarURL();
+                await channel.send({embed:{
                     color: 0x6441a5,
-                    title: "Grid just went live on twitch!",
-                    url: "https://twitch.tv/grid21",
-                    description: userData["activities"][twitchIndex]["details"],
+                    title: `${m.displayName} just went live on twitch!`,
+                    url: activity.url,
+                    description: activity.details,
                     thumbnail: {
                         url: discordProfilePicture
-                    },
-                    image: {
-                        url: "https://cdn.discordapp.com/attachments/703416034803056680/703416283596849242/Grid_Black_1080.png"
-                    }
-                }});
-        
-        
-        
-        
-        for (let m of server.members) {
-            console.log(m.displayName)//brb
-        }
-        
-        for (var m in server.members) {
-            
-            
-            //var m2 = JSON.parse(JSON.stringify(server.members[m].presence));
-            
-            if (server.members[m].roles.some(r=>r==announceRole)) {
-                //console.log(m.displayName)
-                try {
-                    if (!data[server.members[m].id]) {
-                        data[server.members[m].id] = {isLive: false, liveMsg: null};
-                    }
-                    var live = false;
-                    // this is bad dont do this
-                    var userData = JSON.parse(JSON.stringify(server.members[m].presence));
-                    
-                    var twitchIndex = null;
-                    for (var act in userData["activities"]) {
-                        if (userData["activities"][act]["type"] == 1) {
-                            live = true;
-                            //console.log('is live') 
-                            twitchIndex = act;
-                            break;
                         }
                     }
-
-                    if (live) {
-                        if (!data[server.members[m].id].isLive) {
-                            var discordProfilePicture = m.user.avatarURL;
-                            //var msg = "**" + m.displayName + " is now live on twitch at " + userData["activities"][twitchIndex]["url"]
-                            //console.log("is live")
-                            //data[m.id].liveMsg = channel.send(msg);
-                            
-                            data[server.members[m].id].liveMsg = await channel.send({embed:{
-                                color: 0x6441a5,
-                                title: server.members[m].displayName + " just went live on twitch!",
-                                url: userData["activities"][twitchIndex]["url"],
-                                description: userData["activities"][twitchIndex]["details"],
-                                thumbnail: {
-                                    url: discordProfilePicture
-                                }
-                            }});
-                        }
-                        data[server.members[m].id].isLive = true;
-                    } else {
-                        if (data[server.members[m].id].isLive) {
-                            data[server.members[m].id].liveMsg.delete();
-                        }
-                        data[server.members[m].id].isLive = false;
-                    }
-                } catch(err) {
-                    console.log("Error while handling stream check for user " + server.members[m].displayName + ". Error Details: " + err);
-                }
+                });
             }
-        }*/
+        })
+    },
+    async twtich_fetch(url, method) {
+        if (!method) method = "GET"
+        return fetch(url, {
+            method: method, 
+            headers: {
+                "Authorization": "Bearer " + process.env.TWITCH_SECRET,
+                "Client-ID": process.env.TWITCH_ID 
+            } 
+        })
+    },
+    async twitch(username) {
+        twitch_fetch("https://api.twitch.tv/helix/streams?user_login=" + username, "GET").then(res => res.json()).then(body => {
+        const { data } = body;
+        if (!data) return;
+        else {
+            const { user_name, title, game_id } = data;
+            gameid = game_id
+            const game_name = get_game_name(game_id);
+            //its game id only, then you need to check steam api to get the game name
+            // we only need name, title, and game
+            //yes
+        }
+        }) // i figured it out
+    },
+    async loop() {
+    },
+    async get_game_name(id) { // fetch returns the data right? if we can do that then it return an object
+        return await JSON.parse(twitch_fetch("https://api.twitch.tv/helix/games?id=" + game_id)).data[0].name;
+    }
+    //ok i can make pull request
+    //ok cya
+    /* github.com/grid21/guardianbot i think its public speaking of github, you should give me perms on it
+     * @returns game name
+    */
+    
+};
+
