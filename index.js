@@ -5,20 +5,21 @@ var ping = require("./Commands/ping.js");
 // Links file contains social links and all links. Easy Editable file.
 var links = require('./Commands/links.js');
 var clear = require("./Commands/clear.js");
-var { stream, twitch } = require("./streamcheck.js");
+var stream_check = require("./streamcheck.js");
 var messages = require('./JSONFiles/messages.json');
 const {Client, MessageEmbed} = require('discord.js');
-require('dotenv').config()
+require('dotenv').config();
 const bot = new Client({ fetchAllMembers: true });
 /** Fetching all members, so that we can use them later */
-var version = 'v0.4.0';
+var version = 'v0.5.4';
 var data = {};
 
 var profanities = require('profanities')
 const token = process.env.BOT_TOKEN;
 bot.on('ready', async () => {
+    stream_check.init(bot);
     // stream(bot);
-    twitch();
+    //twitch();
     console.log('GuardianBot has joined GOTG Discord!');
     // Lines 20 through 22 is console logging.
     bot.on("error", e => console.error);
@@ -26,14 +27,14 @@ bot.on('ready', async () => {
     bot.on("debug", e => console.info);
 
     // initialize the stream check loop
-    /*setInterval(async function() {
+    setInterval(async function() {
         try {
-            data = await streamcheck.check2(bot);
+            data = await stream_check.loop();
         } catch (err) {
             console.log(err)
         }
         
-    }, 1e4) //3e5 is 5 mins*/
+    }, 1e4) //3e5 is 5 mins
 })
 
 //var staffRoles = ["463937121141522432", "160221051983233024"]
@@ -80,7 +81,7 @@ bot.on('message', async (msg) =>{
                                     },
                                     {
                                         "name": "Additonal help",
-                                        "value": "Leotomas, Yoshidog2005, MarriedGeekGuy"
+                                        "value": "Leotomas, Yoshidog2005, MarriedGeekGuy, Johna3212"
                                     }
                                 ]
                             }
@@ -92,7 +93,6 @@ bot.on('message', async (msg) =>{
                     
                 }
             } else {
-                //do nothing
             }
         }
         catch(err){
@@ -132,4 +132,4 @@ console.log = function(d) { //
 };
 
 bot.login(token);
-console.log("test");
+console.log("login into Discord.");
