@@ -4,6 +4,10 @@ const PREFIX = '!';
 var ping = require("./Commands/ping.js");
 // Links file contains social links and all links. Easy Editable file.
 var links = require('./Commands/links.js');
+
+// future commands for GuardianBot. There is one written in there now. But unsure how to write it so it's for staff only in the main body of code. 
+//var StreamRole = require('./Commands/commands.js');
+
 var clear = require("./Commands/clear.js");
 var stream_check = require("./streamcheck.js");
 var messages = require('./JSONFiles/messages.json');
@@ -25,7 +29,6 @@ bot.on('ready', async () => {
     bot.on("error", e => console.error);
     bot.on("warn", e => console.warn);
     bot.on("debug", e => console.info);
-
     // initialize the stream check loop
     setInterval(async function() {
         try {
