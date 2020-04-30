@@ -25,6 +25,5 @@
     { "msg": "I'm done", "reply": "We're done! https://clips.twitch.tv/MotionlessHilariousCroissantBatChest"},
     { "msg": "How are you", "reply": "Well considering I live in a program on the Grid, I don't get much down time!"},
     { "msg": "Is Grid nice to you?", "reply": "Mostly, but some times, he really gets into my code!" },
-    { "msg":"ping", "reply": "you hit the ball!" },
-    { "msg": "pong", "reply": "you hit the ball back!"}
+    { "msg":"ping", "reply": "PONG! Hit the ball back to you https://gph.is/1fEtc9A" }
 ]
