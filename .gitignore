@@ -24,6 +24,9 @@ lib-cov
 coverage
 *.lcov
 
+# Ignore livedata.json
+livedata.json
+
 # nyc test coverage
 .nyc_output
 
