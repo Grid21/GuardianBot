@@ -36,7 +36,7 @@ module.exports = {
             if (!data) return null;
             else {
                 const { user_name, title, game_id } = data;
-                const game_name = await this.get_game_name(game_id);
+                const game_name = this.get_game_name(game_id);
                 return {
                     user: user_name,
                     title: title,
