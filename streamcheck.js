@@ -9,13 +9,13 @@ var liveData = {}
 module.exports = {
     async init(client) {
         streamerAnnounceChannel = client.channels.cache.get("464335012595105792");
+        ownerAnnounceChannel = client.channels.cache.get("464335012595105792");
         gridServer = client.guilds.cache.get("108417593513127936");
         try {
             liveData = JSON.parse(fs.readFileSync("./livedata.json"))
         } catch (err) {
             liveData = {}
         }
-        
     },
     async twitch_fetch(url, method) {
         if (!method) method = "GET"
@@ -49,6 +49,18 @@ module.exports = {
             //so bot do not stop working. And we catch the error
         })
     },
+    async twitchLinkCommand(message) {
+        if (message.member.id == gridServer.owner.id || message.member.roles.cache.some(r => r.id == announceRole)) {
+            var args = message.content.split(" ");
+            if (args.length >= 2) {
+                let oldName = liveData[message.member.id].twitch
+                liveData[message.member.id].twitch = args[1];
+                message.reply("Succesfully changed remembered twitch username from " + oldName + " to " + liveData[message.member.id].twitch + "!")
+            }
+        } else {
+            message.reply("You do not have permission to do this!")
+        }
+    },
     async loop() {
         gridServer.members.cache.forEach(async m => {
             if (m.id == gridServer.owner.id || m.roles.cache.some(r => r.id == announceRole)) {
@@ -65,12 +77,12 @@ module.exports = {
                 }
                 
                 if (liveData[m.id].twitch) {
-                    let streaming = this.twitch(ud.twitch);
+                    let streaming = this.twitch(liveData[m.id].twitch);
                     if (streaming !== null) {
                         if (!liveData[m.id].islive) {
                             var discordProfilePicture = m.user.avatarURL();
                             if (m.id == gridServer.owner.id) {
-                                //TODO: replace streamerAnnounceChannel with twitch-announcements and affiliated-streamers
+                                //await ownerAnnounceChannel.send({content: "<@&705490467063726090>", embed:{
                                 await streamerAnnounceChannel.send({content: "<@&705490467063726090>", embed:{
                                     color: 0x6441a5,
                                     title: "Grid just went live on twitch!",
@@ -82,7 +94,7 @@ module.exports = {
                                     image: {
                                         url: "https://cdn.discordapp.com/attachments/703416034803056680/703416283596849242/Grid_Black_1080.png"
                                     }
-                                }});
+                                }}).then(sentMessage => liveData[m.id].liveMsgID = sentMessage.id);
                             } else {
                                 await streamerAnnounceChannel.send({embed:{
                                     color: 0x6441a5,
@@ -103,19 +115,23 @@ module.exports = {
                                             inline: true
                                         }
                                     ]
-                                }});
+                                }}).then(sentMessage => liveData[m.id].liveMsgID = sentMessage.id);
                             }
                             
                         }
                         liveData[m.id].islive = true;
                     } else {
                         if (liveData[m.id].islive) {
-                            // delete live message
+                            if (m.id == gridServer.owner.id) {
+                                //ownerAnnounceChannel.messages.delete(liveData[m.id].liveMsgID)
+                                streamerAnnounceChannel.messages.delete(liveData[m.id].liveMsgID)
+                            } else {
+                                streamerAnnounceChannel.messages.delete(liveData[m.id].liveMsgID)
+                            }
                         }
                         liveData[m.id].islive = false;
                     }
                 }
-                //console.log(ud)
             }
         });
         fs.writeFileSync("./livedata.json", liveData);
