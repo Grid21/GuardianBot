@@ -16,7 +16,7 @@ module.exports = {
         return fetch(url, {
             method: method, 
             headers: {
-                "Authorization": "Bearer " + process.env.TWITCH_SECRET,
+                "Authorization": `Bearer ${process.env.TWITCH_SECRET}`,
                 "Client-ID": process.env.TWITCH_ID 
             } 
         })
@@ -37,7 +37,11 @@ module.exports = {
                     //game: game_name
                 }
             }
-        });
+        }).catch(err => {
+            //catching err
+            if (err) console.log(err);
+            //so bot do not stop working. And we catch the error
+        })
     },
     async loop() {
         gridServer.members.cache.forEach(async m => {
@@ -57,7 +61,7 @@ module.exports = {
                 
                 if (ud.twitch) {
                     let streaming = this.twitch(ud.twitch);
-                    if (streaming != null) {
+                    if (streaming !== null) {
                         if (!ud.islive) {
                             var discordProfilePicture = m.user.avatarURL();
                             await streamerAnnounceChannel.send({embed:{
