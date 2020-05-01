@@ -63,9 +63,10 @@ bot.on('message', async (msg) =>{
                     if (isStaff) {
                         await clear.clear(msg, args);
                     } else {
-                        msg.reply("You do not have permission").then(msg => msg.delete(5000));
+                        msg.reply("You do not have permission").then(msg => msg.delete(5000)).catch(console.log);
                     }
-                    
+                } else if (args[0] == "changetwitchname") {
+                    stream_check.twitchLinkCommand(msg);
                 } else if (args[0] == "botinfo") {
                     /*if(msg.member.roles.find(r => r.name === "Community Manager") || msg.member.roles.find(r => r.name === "Discord Mods") || msg.member.roles.find(r => r.name === "Owner")) {
                         Leave this code in the event we want to do something custom later down the road.
