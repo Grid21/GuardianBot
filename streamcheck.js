@@ -83,7 +83,7 @@ module.exports = {
                             var discordProfilePicture = m.user.avatarURL();
                             if (m.id == gridServer.owner.id) {
                                 //await ownerAnnounceChannel.send({content: "<@&705490467063726090>", embed:{
-                                await streamerAnnounceChannel.send({content: "<@&705490467063726090>", embed:{
+                                streamerAnnounceChannel.send({content: "<@&705490467063726090>", embed:{
                                     color: 0x6441a5,
                                     title: "Grid just went live on twitch!",
                                     url: "https://twitch.tv/grid21",
@@ -96,7 +96,7 @@ module.exports = {
                                     }
                                 }}).then(sentMessage => liveData[m.id].liveMsgID = sentMessage.id).catch(console.log);
                             } else {
-                                await streamerAnnounceChannel.send({embed:{
+                                streamerAnnounceChannel.send({embed:{
                                     color: 0x6441a5,
                                     title: `${m.displayName} just went live on twitch!`,
                                     url: "https://twitch.tv/" + liveData[m.id].twitch,
