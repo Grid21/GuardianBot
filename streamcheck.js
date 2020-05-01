@@ -36,10 +36,10 @@ module.exports = {
             if (!data) return null;
             else {
                 const { user_name, title, game_id } = data;
-                const game_name = this.get_game_name(game_id);
+                const game_name = await this.get_game_name(game_id);
                 return {
                     user: user_name,
-                    stream_title: title,
+                    title: title,
                     game: game_name
                 }
             }
@@ -134,6 +134,6 @@ module.exports = {
                 }
             }
         });
-        fs.writeFileSync("./livedata.json", liveData);
+        fs.writeFileSync("./livedata.json", JSON.stringify(liveData));
     },
 };
