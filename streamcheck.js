@@ -94,7 +94,7 @@ module.exports = {
                                     image: {
                                         url: "https://cdn.discordapp.com/attachments/703416034803056680/703416283596849242/Grid_Black_1080.png"
                                     }
-                                }}).then(sentMessage => liveData[m.id].liveMsgID = sentMessage.id);
+                                }}).then(sentMessage => liveData[m.id].liveMsgID = sentMessage.id).catch(console.log);
                             } else {
                                 await streamerAnnounceChannel.send({embed:{
                                     color: 0x6441a5,
@@ -115,7 +115,7 @@ module.exports = {
                                             inline: true
                                         }
                                     ]
-                                }}).then(sentMessage => liveData[m.id].liveMsgID = sentMessage.id);
+                                }}).then(sentMessage => liveData[m.id].liveMsgID = sentMessage.id).catch(console.log);
                             }
                             
                         }

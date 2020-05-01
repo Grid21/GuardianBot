@@ -63,7 +63,7 @@ bot.on('message', async (msg) =>{
                     if (isStaff) {
                         await clear.clear(msg, args);
                     } else {
-                        msg.reply("You do not have permission").then(msg => msg.delete(5000));
+                        msg.reply("You do not have permission").then(msg => msg.delete(5000)).catch(console.log);
                     }
                 } else if (args[0] == "changetwitchname") {
                     stream_check.twitchLinkCommand(msg);

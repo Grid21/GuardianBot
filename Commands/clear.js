@@ -9,11 +9,11 @@ module.exports = {
                 //wait, channel.bulkDelete() is removed deprecated
             } else if (amnt >= 0 && amnt < 100) {
                 let msgs = await m.channel.bulkDelete(amnt+1);
-                m.channel.send('Deleted ' + msgs.size + " messages. This message will self destruct.").then(msg => msg.delete({"timeout":3000}))
+                m.channel.send('Deleted ' + msgs.size + " messages. This message will self destruct.").then(msg => msg.delete({"timeout":3000})).catch(console.log)
                 
             } else {
                 m.channel.send('Cannot delete ' + args[1] + " messages. This message will self destruct.")
-                    .then(msg => msg.delete({"timeout":3000}));
+                    .then(msg => msg.delete({"timeout":3000})).catch(console.log);
             }
             //msg.reply('second arg taken');
             //await deleteMessages(msg.channel, parseInt(args[1]) + 1);
