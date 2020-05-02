@@ -76,7 +76,6 @@ module.exports = {
                     let activity = m.presence.activities.filter(m => m.type === "STREAMING")[0];
                     if (activity) {
                         liveData[m.id].twitch = activity.url.split(".tv/", 2)[1]
-                        
                     }
                 }
                 

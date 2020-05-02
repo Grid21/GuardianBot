@@ -25,9 +25,9 @@ module.exports = {
             // if (message.mentions.members.first().id !== "591744135522680843") return;
             const reply = replies.find(m => m.msg.toLowerCase() === message.content.toLowerCase());
             if (reply) {
-                console.log(reply)
+                //console.log(reply)
                 message.channel.send(reply.reply)
-            } else console.log("not found")
+            } //else console.log("not found")
         } else {
             const data = await client.Guild.get(message.guild.id, 'prefix');
             if (data) client.prefix = data;
