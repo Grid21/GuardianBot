@@ -1,5 +1,4 @@
-
-const { PREFIX } = require('../config.json');
+const PREFIX = "!"
 
 module.exports = {
     name: 'message',
@@ -8,8 +7,8 @@ module.exports = {
         if (data) client.prefix = data;
         if (!client.prefix) return;
         if (!message.content.startsWith(client.prefix) || message.author.bot) return;
-        const args = message.content.slice(client.prefix.length).split(/ +/g);
-        const command = args.shift().toLowerCase();
+        const [commandName, ...args] = message.content.slice(client.prefix.length).split(/\s+/);
+        const command = client.commands.get(commandName.toLowerCase());
         if (!command) return;
 
         try {

@@ -1,6 +1,17 @@
+
+const { Message } = require("discord.js")
 module.exports = {
-    clear: async function(m, args) {
-            if (args[0]) {
+    name: 'clear', // name of the command
+    description: 'Purge messages', // description of the command
+    /**
+     * 
+     * @param {Message} m
+     * @param {Array} args 
+     */
+    async run(m, args) {
+        //ok its correct just need !msg to check if member has not the perms
+        if (!m.member.roles.cache.has("160221051983233024") || !m.member.roles.cache.has("593667878063046666")) return; //perms checking        
+        if (args[0]) {
             var amnt = parseInt(args[0])
             if (isNaN(amnt)) {
                 m.channel.send("You must type a number!")
