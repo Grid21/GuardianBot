@@ -18,36 +18,40 @@ module.exports = {
         }
     },
     async twitch_fetch(url, method) {
-        if (!method) method = "GET"
-        return fetch(url, {
-            method: method, 
-            headers: {
-                "Authorization": `Bearer ${process.env.TWITCH_SECRET}`,
-                "Client-ID": process.env.TWITCH_ID 
-            } 
-        })
+        try {
+            if (!method) method = "GET"
+            var res = await fetch(url, {
+                method: method, 
+                headers: {
+                    "Authorization": "OAuth " + process.env.TEST_OAUTH,
+                    "Client-ID": process.env.TEST_ID 
+                } 
+            })
+            var { body } = res;
+            return body
+        } catch (err) {
+            return null;
+        }
+        
     },
     async get_game_name(id) {
-        return await JSON.parse(this.twitch_fetch("https://api.twitch.tv/helix/games?id=" + id)).data[0].name;
+        return JSON.parse(await this.twitch_fetch("https://api.twitch.tv/helix/games?id=" + id)).data[0].name;
     },
     async twitch(username) { // if user is streaming, returns stream data, otherwise, returns null
-        this.twitch_fetch("https://api.twitch.tv/helix/streams?user_login=" + username, "GET").then(res => res.json()).then(body => {
-            const { data } = body;
-            if (!data) return null;
-            else {
-                const { user_name, title, game_id } = data;
-                const game_name = this.get_game_name(game_id);
-                return {
-                    user: user_name,
-                    title: title,
-                    game: game_name
-                }
+        console.log("check")
+        data = await this.twitch_fetch("https://api.twitch.tv/helix/streams?user_login=" + username, "GET")
+        console.log(JSON.stringify(data));
+        if (!data) return null;
+        else {
+            const { user_name, title, game_id } = data;
+            const game_name = null//await this.get_game_name(game_id);
+            console.log("returning twitch data")
+            return {
+                user: user_name,
+                title: title,
+                game: game_name
             }
-        }).catch(err => {
-            //catching err
-            if (err) console.log(err);
-            //so bot do not stop working. And we catch the error
-        })
+        }
     },
     async twitchLinkCommand(message) {
         if (message.member.id == gridServer.owner.id || message.member.roles.cache.some(r => r.id == announceRole)) {
@@ -77,7 +81,8 @@ module.exports = {
                 }
                 
                 if (liveData[m.id].twitch) {
-                    let streaming = this.twitch(liveData[m.id].twitch);
+                    let streaming = await this.twitch(liveData[m.id].twitch);
+                    console.log(streaming)
                     if (streaming !== null) {
                         if (!liveData[m.id].islive) {
                             var discordProfilePicture = m.user.avatarURL();

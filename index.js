@@ -32,7 +32,8 @@ bot.on('ready', async () => {
     // initialize the stream check loop
     setInterval(async function() {
         try {
-            data = await stream_check.loop();
+            //data = await stream_check.loop();
+            let a = null; //just do nothing to not raise an error
         } catch (err) {
             console.log(err)
         }
