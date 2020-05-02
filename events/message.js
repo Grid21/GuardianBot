@@ -1,7 +1,9 @@
 const PREFIX = "!"
+
 const { Client, Message } = requrie("discord.js"); 
 const replies = require("../JSONFiles/messages.json");
 const profanities = require("profanities");
+
 module.exports = {
     name: 'message',
     /**
@@ -21,6 +23,7 @@ module.exports = {
 
         const data = await client.Guild.get(message.guild.id, 'prefix');
         if (data) client.prefix = data;
+
         if (message.author.bot) return;
         if (!message.content.startsWith(client.prefix)) {
             const message = replies.find(m => m.message.toLowerCase() === message.content.toLowerCase)
@@ -28,6 +31,9 @@ module.exports = {
                 message.channel.send(message.reply);
             };
         }
+
+        if (!client.prefix) return;
+        if (!message.content.startsWith(client.prefix) || message.author.bot) return;
         const [commandName, ...args] = message.content.slice(client.prefix.length).split(/\s+/);
         const command = client.commands.get(commandName.toLowerCase());
         if (!command) return;
