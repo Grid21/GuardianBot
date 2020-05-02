@@ -13,6 +13,9 @@
     "cuss": "^1.16.0",
     "discord.js": "^12.2.0",
     "dotenv": "^8.0.0",
-    "profanities": "^2.11.0"
+    "endb": "^0.22.9",
+    "profanities": "^2.11.0",
+    "sql": "^0.78.0",
+    "sqlite3": "^4.2.0"
   }
 }

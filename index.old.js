@@ -68,32 +68,7 @@ bot.on('message', async (msg) =>{
                     }
                 } else if (args[0] == "changetwitchname") {
                     stream_check.twitchLinkCommand(msg);
-                } else if (args[0] == "botinfo") {
-                    /*if(msg.member.roles.find(r => r.name === "Community Manager") || msg.member.roles.find(r => r.name === "Discord Mods") || msg.member.roles.find(r => r.name === "Owner")) {
-                        Leave this code in the event we want to do something custom later down the road.
-                    */
-                    if (isStaff) {
-                        msg.channel.send({
-                            "embed": {
-                                "title": "GuardianBot (" + version + ")",
-                                "description": "Thank you to everyone that has contributed to the creation of GuardianBot!",
-                                "color": 0x0000ff,
-                                
-                                "fields": [
-                                    {
-                                        "name": "Authors of GuardianBot",
-                                        "value": "Grid21, \nVergilPrime, \nSundafyllir"
-                                    },
-                                    {
-                                        "name": "Additonal help",
-                                        "value": "Leotomas, Yoshidog2005, MarriedGeekGuy, Johna3212"
-                                    }
-                                ]
-                            }
-                        });
-                    } else {
-                        msg.channel.send('You do not have permission');
-                    }
+
                 } else if (args[0] == "streamtest") {
                     
                 }
