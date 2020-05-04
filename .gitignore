@@ -1,5 +1,8 @@
 livedata.json
 
+# Batch file ignore
+.bat
+
 # Logs
 logs
 *.log
