@@ -14,6 +14,7 @@
     "discord.js": "^12.2.0",
     "dotenv": "^8.0.0",
     "endb": "^0.22.9",
+    "fs": "0.0.1-security",
     "profanities": "^2.11.0",
     "sql": "^0.78.0",
     "sqlite3": "^4.2.0"
