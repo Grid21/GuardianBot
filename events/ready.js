@@ -5,9 +5,13 @@ module.exports = {
     name: 'ready',
     run: async client => {
         return console.log(`Logged in as ${client.user.tag}!`);
-        usernames.forEach(username => {
-        twitch_data(client, username);
-        })
+        const usernames = await client.Guild.get("url");
+        setInterval(() =>{
+            usernames.forEach(username => {
+            twitch_data(client, username);
+            })
+
+        }, 30000)
     }
 };
 async function twitch_fetch(url) {
@@ -57,4 +61,5 @@ async function twitch_data(client, username) {
             ]
         }
     })
+
 }
