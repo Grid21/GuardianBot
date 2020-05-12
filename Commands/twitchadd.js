@@ -11,20 +11,16 @@ module.exports = {
      */
     async run({client, content, guild, channel, member, mentions}, [cont, ...args]) {
     let array;
-            if (cont.match(/(http)\w:\/\/+www.twitch.tv\//g)) {
-         const url = cont.slice(22).replace("/", "")
-         await client.Guild.push('url', `${url.replace("/", "")}`);
+        if (cont.match(/(http)\w:\/\/+www.twitch.tv\//g)) {
+        const url = cont.slice(22).replace("/", "")
+        let newurls = await client.Guild.get('urls') || [];
+       await newurls.push(url);
+        const m = await client.Guild.set('urls', newurls)
         channel.send("Successfully added " + url);
-        } else return channel.send("Please provide a valid Twitch link.");
-//      fs.writeFile("./JSONFiles/twitch.json", JSON.stringify(array), err => {
-//          if (err) {
-//              console.error(err)
-//              return channel.send("done")
-//          }
-//      })
+        console.log(m)
 
- 
-   }
-  }
-        //we are adding url name only so its not a headache
-    
+        } else return channel.send("Please provide a valid Twitch link.");
+
+}
+}
+
