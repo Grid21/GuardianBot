@@ -1,17 +1,20 @@
 const fet = require("node-fetch");
-const { MessageEmbed } = require("discord.js");
+const discord = require("discord.js");
 const fs = require("fs");
 module.exports = {
     name: 'ready',
     run: async client => {
-        return console.log(`Logged in as ${client.user.tag}!`);
-        const usernames = await client.Guild.get("url");
+        console.log(`Logged in as ${client.user.tag}!`);
+        client.user.setPresence({ activity: { name: 'the Users', type: "WATCHING" }, status: 'online', }) //wait did you change my Status? xD I like it that way. Haha
+            //.then(console.log)
+            //.catch(console.error);
+        /*const usernames = await client.Guild.get("url");
         setInterval(() =>{
             usernames.forEach(username => {
-            twitch_data(client, username);
+            twitch_data(client, username); 
             })
 
-        }, 30000)
+        }, 30000)*/
     }
 };
 async function twitch_fetch(url) {
