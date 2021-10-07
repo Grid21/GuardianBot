@@ -2,7 +2,7 @@ const PREFIX = "!"
 const { readdirSync } = require("fs") //save 
 //default prefix
 const Endb = require("endb"); //module `npm i endb`
-//omg i forgot to import liabries
+//omg i forgot to import libraries
 const {Client, MessageEmbed, Collection} = require('discord.js');
 require('dotenv').config({
   path: "./.env"
